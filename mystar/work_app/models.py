@@ -26,7 +26,7 @@ class UserProfile(AbstractUser):
 
 
 class SocialNetwork(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='users')
     name = models.CharField(max_length=30)
     url = models.URLField()
 
@@ -54,9 +54,9 @@ class Project(models.Model):
         ('cancelled', 'cancelled')
     )
     status = models.CharField(choices=STATUS_CHOICES)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='projects')
     skills_required = models.ManyToManyField(Skill)
-    client = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    client = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='clients')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Project(models.Model):
 
 
 class Offer(models.Model):
-    project= models.ForeignKey(Project, on_delete=models.CASCADE)
+    project= models.ForeignKey(Project, on_delete=models.CASCADE, related_name='offers')
     freelancer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     message = models.TextField()
     proposed_budget = models.IntegerField()
@@ -77,7 +77,7 @@ class Offer(models.Model):
 
 
 class Review(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
     reviewer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reviews_written')
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reviews_received')
     rating = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 5)])
