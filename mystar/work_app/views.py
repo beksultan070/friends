@@ -3,7 +3,9 @@ from .models import (Skill, UserProfile, SocialNetwork, Category, Project, Offer
 from .serializers import (SkillSerializer, UserProfileSerializer, SocialNetworkSerializer, CategoryListSerializer,
                           ProjectListSerializer,ProjectDetailSerializer, OfferSerializer, CategoryDetailSerializer,
                           ReviewSerializer)
-
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProjectFilter
 
 
 class SkillViewSet(viewsets.ModelViewSet):
@@ -37,6 +39,10 @@ class CategoryDetailAPIView(generics.RetrieveAPIView):
 class ProjectListAPIView(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectListSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    filterset_class = ProjectFilter
+    search_fields = ['title']
+    ordering_fields = ['budget', 'created_at']
 
 
 class ProjectDetailAPIView(generics.RetrieveAPIView):
