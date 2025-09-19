@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, permissions
 from .models import (Skill, UserProfile, SocialNetwork, Category, Project, Offer, Review)
 from .serializers import (SkillSerializer, UserProfileSerializer, SocialNetworkSerializer, CategoryListSerializer,
                           ProjectListSerializer,ProjectDetailSerializer, OfferSerializer, CategoryDetailSerializer,
@@ -6,6 +6,7 @@ from .serializers import (SkillSerializer, UserProfileSerializer, SocialNetworkS
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProjectFilter
+from .permissions import ChekRole, ChekAuthorReview
 
 
 class SkillViewSet(viewsets.ModelViewSet):
